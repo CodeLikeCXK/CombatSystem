@@ -26,6 +26,9 @@
 #include "Actions/CSCharacterState_Block.h"
 
 #include "NiagaraFunctionLibrary.h"
+#include "Engine/OverlapResult.h"
+
+
 
 static int32 GenericDebugDraw = 0;
 FAutoConsoleVariableRef CVARGenericDebugDraw(

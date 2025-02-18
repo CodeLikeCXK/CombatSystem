@@ -5,6 +5,9 @@
 #include "CSCharacter.h"
 #include "Components/CSHealthComponent.h"
 
+#include <cmath>
+
+
 ACSGameMode::ACSGameMode() : AGameModeBase()
 {
 	TimeBetweenWaves = 2.0f;

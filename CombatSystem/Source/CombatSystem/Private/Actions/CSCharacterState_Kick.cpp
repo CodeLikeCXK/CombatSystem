@@ -8,6 +8,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/CSStaminaComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Engine/OverlapResult.h"
+
+
 
 UCSCharacterState_Kick::UCSCharacterState_Kick() : UCSCharacterState()
 {
