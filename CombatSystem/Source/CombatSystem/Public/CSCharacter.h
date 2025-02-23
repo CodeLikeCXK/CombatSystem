@@ -29,7 +29,8 @@ DECLARE_DELEGATE_ThreeParams(CSStateKeyDelegate, CharacterStateType, FString, EI
 enum class CSCombatType : uint8
 {
 	MELEE,
-	RANGED
+	RANGED,
+	MAGIC
 };
 
 UCLASS()
