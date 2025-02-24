@@ -20,9 +20,8 @@ UCSCharacterState_Attack::UCSCharacterState_Attack() : UCSCharacterState()
 
 	HitPauseDuration = 0.2f;
 	HitPauseTimeDilation = 0.5f;
-	StrongAttackDamageMultiplier = 1.5f;
 
-	ThirdDefaultAttackMovementSpeed = 20.0f;
+	FinalDefaultAttackMovementSpeed = 20.0f;
 	SpiralAttackMovementSpeed = 150.0f;
 	RollAttackMovementSpeed = 10.0f;
 	StrongAttackMovementSpeed = 150.0f;
@@ -102,10 +101,10 @@ void UCSCharacterState_Attack::UpdateState(float DeltaTime)
 	{
 		GEngine->AddOnScreenDebugMessage(INDEX_NONE, DeltaTime, FColor::Yellow, TEXT("Wants to attack"));
 	}
-
-	if (CurrentSubstate == (uint8)CharacterSubstateType_Attack::DEFAULT_ATTACK && CurrentConsecutiveAttacks == 2)
+//replace max number 2 with DefaultAttackAnimMontages.Num()
+	if (CurrentSubstate == (uint8)CharacterSubstateType_Attack::DEFAULT_ATTACK && CurrentConsecutiveAttacks == (DefaultAttackAnimMontages.Num() - 1))
 	{
-		FVector Translation = Character->GetActorForwardVector() * ThirdDefaultAttackMovementSpeed * DeltaTime;
+		FVector Translation = Character->GetActorForwardVector() * FinalDefaultAttackMovementSpeed * DeltaTime;
 		Character->SetActorLocation(Character->GetActorLocation() + Translation);
 	}
 	else if (CurrentSubstate == (uint8)CharacterSubstateType_Attack::SPIRAL_ATTACK)
@@ -221,5 +220,5 @@ void UCSCharacterState_Attack::OnEnemyHit()
 
 float UCSCharacterState_Attack::GetDamageMultiplier()
 {
-	return CurrentSubstate == (uint8)CharacterSubstateType_Attack::STRONG_ATTACK ? StrongAttackDamageMultiplier : 1.0;
+	return CurrentSubstate == (uint8)CharacterSubstateType_Attack::STRONG_ATTACK ? Character->GetCurrentWeapon()->StrongAttackDamageMultiplier : 1.0;
 }

@@ -22,6 +22,9 @@ public:
 	// Sets default values for this actor's properties
 	ACSWeapon();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Weapon")
+	float StrongAttackDamageMultiplier = 2.5f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,6 +41,7 @@ protected:
 	TSubclassOf<UDamageType> DamageType;
 
 	ACSCharacter* Character;
+
 
 public:	
 	void SetCharacter(ACSCharacter* NewCharacter);

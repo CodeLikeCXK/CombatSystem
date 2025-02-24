@@ -56,11 +56,12 @@ protected:
 
 	int CurrentConsecutiveAttacks;
 
-	UPROPERTY(EditAnywhere, Category = "Attack")
-		float StrongAttackDamageMultiplier;
+	//move StrongAttackDamageMultiplier to weapon
+	//UPROPERTY(EditAnywhere, Category = "Attack")
+	//	float StrongAttackDamageMultiplier;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-		float ThirdDefaultAttackMovementSpeed;
+		float FinalDefaultAttackMovementSpeed;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 		float SpiralAttackMovementSpeed;
