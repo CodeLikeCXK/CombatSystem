@@ -197,6 +197,13 @@ void UCSCharacterState_Attack::OnAnimationNotify(FString AnimationNotifyName)
 			Character->StopAnimMontage(DefaultAttackAnimMontages[CurrentConsecutiveAttacks]);
 			Character->ChangeState(CharacterStateType::DODGE);
 		}
+		//add new state that allows block to cancel
+		else if (Character->IsStateRequested(CharacterStateType::BLOCK))
+		{
+			Character->StopAnimMontage(DefaultAttackAnimMontages[CurrentConsecutiveAttacks]);
+			Character->ChangeState(CharacterStateType::BLOCK);
+		}
+		//end
 		else
 		{
 			float Forward = Character->GetInputAxisValue("MoveForward");

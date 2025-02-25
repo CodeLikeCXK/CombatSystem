@@ -28,6 +28,8 @@ public:
 
 	void OnAttackBegin(CharacterSubstateType_Attack AttackSubstate);
 
+
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -54,6 +56,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Sounds")
 		USoundBase* SecondarySlashSound;
+
+
 
 	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint) override;
 
