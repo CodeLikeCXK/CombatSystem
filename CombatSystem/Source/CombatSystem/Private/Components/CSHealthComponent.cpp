@@ -69,18 +69,9 @@ void UCSHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage,
 		if (Character->GetCurrentState() == CharacterStateType::HIT && Character->GetCurrentSubstate() == (uint8)CharacterSubstateType_Hit::PARRIED_HIT) 
 		{
 			UCSCharacterState_Hit* HitState = Cast< UCSCharacterState_Hit>(Character->GetCharacterState(CharacterStateType::HIT));
-			//20250225: change: when parried failed, damage -50%
 			if (HitState)
 			{
-				if(Character->GetCurrentSubstate() == (uint8)CharacterSubstateType_Hit::PARRIED_HIT)
-				{
-					Damage *= HitState->GetDamageMultiplier() * 0.5f;
-					
-				}
-				else
-				{
-					Damage *= HitState->GetDamageMultiplier();
-				}
+				Damage *= HitState->GetDamageMultiplier();
 			}
 		}
 
