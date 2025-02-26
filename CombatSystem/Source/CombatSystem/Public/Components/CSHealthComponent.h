@@ -20,20 +20,32 @@ public:
 	// Sets default values for this component's properties
 	UCSHealthComponent();
 
+	UPROPERTY(EditAnywhere, Category = "HealthComponent")
+	float HealthRestorePercentageOnAttack = 0.1f;
+
+	UPROPERTY(EditAnywhere, Category = "HealthComponent")
+	float StartingHealth;
+
+	UPROPERTY(EditAnywhere, Category = "HealthComponent")
+	float MaxHealth;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadonly, Category = "HealthComponent")
-	float MaxHealth;
+	
 	
 	float CurrentHealth;
 
 	UPROPERTY(EditAnywhere, Category = "HealthComponent")
 	float HealthRecuperationPerSecond;
 
+	
+
 	UFUNCTION()
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+	
 
 	bool Invulnerable;
 
@@ -50,7 +62,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInvulnerable(bool NewInvulnerable);
 
-	float GetHealthPercentage();
+	float GetHealthPercentage(float Current, float Max);
 
 	float GetCurrentHealth() const;
 };

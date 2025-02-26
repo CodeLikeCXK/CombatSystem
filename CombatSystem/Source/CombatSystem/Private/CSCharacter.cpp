@@ -267,7 +267,7 @@ void ACSCharacter::OnHealthChanged(UCSHealthComponent* HealthComponent, float Cu
 		ChangeState(CharacterStateType::DEAD);
 	}
 
-	UpdateHealth(HealthComp->GetHealthPercentage());
+	UpdateHealth(HealthComp->GetHealthPercentage(CurrentHealth,HealthComponent->MaxHealth));
 }
 
 #pragma region Target Locking

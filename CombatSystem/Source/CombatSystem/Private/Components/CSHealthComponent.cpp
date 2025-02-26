@@ -2,6 +2,8 @@
 
 #include "Components/CSHealthComponent.h"
 
+#include <string>
+
 #include "CSCharacter.h"
 #include "Actions/CSCharacterState.h"
 #include "Actions/CSCharacterState_Hit.h"
@@ -13,6 +15,7 @@ UCSHealthComponent::UCSHealthComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	MaxHealth = 100;
+	StartingHealth = 25;
 	HealthRecuperationPerSecond = 0.0f;
 	Character = Cast<ACSCharacter>(GetOwner());
 }
@@ -25,7 +28,7 @@ void UCSHealthComponent::BeginPlay()
 
 	// ...
 
-	CurrentHealth = MaxHealth;
+	CurrentHealth = StartingHealth;
 
 	AActor* MyOwner = GetOwner();
 	if (MyOwner)
@@ -44,7 +47,7 @@ void UCSHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		{
 			CurrentHealth += HealthRecuperationPerSecond * DeltaTime;
 
-			Character->UpdateHealth(GetHealthPercentage());
+			Character->UpdateHealth(GetHealthPercentage(CurrentHealth,MaxHealth));
 		}
 	}
 }
@@ -85,8 +88,21 @@ void UCSHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage,
 		Character->ChangeState(CharacterStateType::HIT, (uint8)CharacterSubstateType_Hit::DEFAULT_HIT);
 	}
 
-	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, MaxHealth);
+	//CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, MaxHealth);
+	//remove clamp for damage to allow revocer health easier
+	CurrentHealth = CurrentHealth - Damage;
 	OnHealthChanged.Broadcast(this, CurrentHealth, Damage, DamageType, InstigatedBy, DamageCauser);
+
+	if (DamagerCharacter && DamagerCharacter->IsPlayerControlled())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Player Health %f"), DamagerCharacter->GetHealthComponent()->CurrentHealth));	
+		if (DamagerCharacter->GetHealthComponent()->GetCurrentHealth() > 0.0f)
+		{
+			DamagerCharacter->GetHealthComponent()->CurrentHealth = FMath::Clamp(DamagerCharacter->GetHealthComponent()->GetCurrentHealth() + HealthRestorePercentageOnAttack * DamagerCharacter->GetHealthComponent()->MaxHealth,DamagerCharacter->GetHealthComponent()->GetCurrentHealth(),DamagerCharacter->GetHealthComponent()->MaxHealth);
+			DamagerCharacter->UpdateHealth(GetHealthPercentage(DamagerCharacter->GetHealthComponent()->GetCurrentHealth(),DamagerCharacter->GetHealthComponent()->MaxHealth));
+		}
+
+	}
 }
 
 bool UCSHealthComponent::IsInvulnerable() const
@@ -100,9 +116,9 @@ void UCSHealthComponent::SetInvulnerable(bool NewInvulnerable)
 	Invulnerable = NewInvulnerable;
 }
 
-float UCSHealthComponent::GetHealthPercentage()
+float UCSHealthComponent::GetHealthPercentage(float Current, float Max)
 {
-	return CurrentHealth / MaxHealth;
+	return Current / Max;
 }
 
 float UCSHealthComponent::GetCurrentHealth() const
